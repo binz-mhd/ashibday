@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080808">
+
 <title>25 — A little world</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +49,7 @@ body{
 }
 
 .lenis.lenis-smooth [data-lenis-prevent]{
-  overscroll-behavior:contain
+  overscroll-behavior-x:contain
 }
 
 .noise{
@@ -124,6 +125,9 @@ a{
   font-weight:400
 }
 
+
+/* LOADER */
+
 .loader{
   position:fixed;
   inset:0;
@@ -131,7 +135,9 @@ a{
   background:#080808;
   display:grid;
   place-items:center;
-  transition:opacity 1s cubic-bezier(.2,.8,.2,1),visibility 1s
+  transition:
+    opacity 1s cubic-bezier(.2,.8,.2,1),
+    visibility 1s
 }
 
 .loader.hide{
@@ -179,6 +185,9 @@ a{
   }
 }
 
+
+/* HERO */
+
 .hero{
   height:100svh;
   position:relative;
@@ -199,7 +208,13 @@ a{
 .hero-vignette{
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at 50% 45%,transparent 0 22%,rgba(0,0,0,.7) 72%,#080808 100%)
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      transparent 0 22%,
+      rgba(0,0,0,.7) 72%,
+      #080808 100%
+    )
 }
 
 .hero-copy{
@@ -249,6 +264,9 @@ a{
   color:#8e8a84
 }
 
+
+/* INTRO */
+
 .intro{
   min-height:120svh;
   display:grid;
@@ -269,7 +287,7 @@ a{
 }
 
 .intro h2{
-  font-size:clamp(50px,9vw,140px);
+  font:clamp(50px,9vw,140px) var(--sans);
   font-weight:500;
   letter-spacing:-.065em;
   line-height:.88;
@@ -301,6 +319,9 @@ a{
   margin-top:15px
 }
 
+
+/* STORY */
+
 .story{
   position:relative
 }
@@ -331,17 +352,33 @@ a{
 }
 
 .scene:nth-child(odd) .scene-img{
-  clip-path:polygon(8% 0,100% 5%,94% 100%,0 94%)
+  clip-path:polygon(
+    8% 0,
+    100% 5%,
+    94% 100%,
+    0 94%
+  )
 }
 
 .scene:nth-child(even) .scene-img{
-  clip-path:polygon(0 7%,91% 0,100% 94%,8% 100%)
+  clip-path:polygon(
+    0 7%,
+    91% 0,
+    100% 94%,
+    8% 100%
+  )
 }
 
 .scene-shade{
   position:absolute;
   inset:0;
-  background:linear-gradient(90deg,rgba(8,8,8,.7),transparent 55%,rgba(8,8,8,.35));
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8,8,8,.7),
+      transparent 55%,
+      rgba(8,8,8,.35)
+    );
   pointer-events:none
 }
 
@@ -389,6 +426,9 @@ a{
   margin-left:auto
 }
 
+
+/* CONSTELLATION */
+
 .constellation{
   min-height:140svh;
   padding:14vw var(--pad);
@@ -423,7 +463,9 @@ a{
   aspect-ratio:.76;
   object-fit:cover;
   box-shadow:0 18px 80px rgba(0,0,0,.45);
-  transition:transform .8s cubic-bezier(.2,.8,.2,1),filter .8s
+  transition:
+    transform .8s cubic-bezier(.2,.8,.2,1),
+    filter .8s
 }
 
 .memory:hover{
@@ -486,9 +528,7 @@ a{
 }
 
 
-/* =========================================
-   HORIZONTAL ARCHIVE
-========================================= */
+/* ARCHIVE / CAROUSEL */
 
 .archive{
   padding:12vw 0;
@@ -516,65 +556,55 @@ a{
 
 /*
   IMPORTANT:
-  The wrapper controls the viewport.
-  The rail itself becomes the horizontal
-  touch surface.
+  This is the actual horizontal scrolling viewport.
+
+  The page itself remains vertically scrollable.
+  The carousel only moves horizontally when:
+  - dragged with a mouse
+  - swiped horizontally on touch
+  - native horizontal scrolling is used
 */
 
 .rail-wrap{
   width:100%;
-  overflow:hidden;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  overscroll-behavior-y:auto;
+  scrollbar-width:none;
+  touch-action:pan-x pan-y;
+  cursor:grab;
+  user-select:none;
+  -webkit-user-select:none;
+  margin-top:70px
+}
 
-  /*
-    Allow the browser to continue
-    handling vertical page scrolling.
-  */
-  touch-action:pan-y;
+.rail-wrap::-webkit-scrollbar{
+  display:none
+}
 
-  overscroll-behavior-x:contain
+.rail-wrap.dragging{
+  cursor:grabbing
 }
 
 .rail{
   display:flex;
+  flex-wrap:nowrap;
   gap:3vw;
   width:max-content;
-  padding:100px var(--pad) 30px;
-
-  will-change:scroll-position;
-
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-touch-callout:none;
-
-  /*
-    This is the important mobile fix.
-  */
-  touch-action:pan-x;
-
-  overscroll-behavior-x:contain;
-
-  cursor:grab
-}
-
-.rail.dragging{
-  cursor:grabbing
+  padding:30px var(--pad) 40px;
+  will-change:scroll-position
 }
 
 .card{
   width:min(38vw,500px);
   min-width:280px;
-
   aspect-ratio:.78;
-
   position:relative;
   overflow:hidden;
   background:#161616;
-
-  /*
-    Prevent flexbox from shrinking
-    cards on small screens.
-  */
-  flex:none
+  flex:0 0 auto
 }
 
 .card img{
@@ -582,13 +612,8 @@ a{
   height:100%;
   object-fit:cover;
   filter:grayscale(.2);
-  transition:transform 1.2s cubic-bezier(.2,.8,.2,1);
-
-  /*
-    Image should not steal the
-    pointer interaction from the rail.
-  */
-  pointer-events:none
+  transition:
+    transform 1.2s cubic-bezier(.2,.8,.2,1)
 }
 
 .card:hover img{
@@ -600,15 +625,13 @@ a{
   left:18px;
   right:18px;
   bottom:16px;
-
   display:flex;
   justify-content:space-between;
-
   font:10px var(--mono);
   letter-spacing:.08em;
   text-transform:uppercase;
-
-  text-shadow:0 2px 10px #000
+  text-shadow:0 2px 10px #000;
+  pointer-events:none
 }
 
 .rail-note{
@@ -620,9 +643,7 @@ a{
 }
 
 
-/* =========================================
-   FUTURE
-========================================= */
+/* FUTURE */
 
 .future{
   min-height:150svh;
@@ -666,9 +687,74 @@ a{
 }
 
 
-/* =========================================
-   FINAL
-========================================= */
+/* LETTER */
+
+.letter{
+  min-height:135svh;
+  padding:16vw var(--pad);
+  display:grid;
+  place-items:center;
+  background:#0a0a0a
+}
+
+.letter-inner{
+  width:min(920px,100%)
+}
+
+.letter-meta{
+  display:flex;
+  justify-content:space-between;
+  font:10px var(--mono);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#777
+}
+
+.letter-rule{
+  height:1px;
+  background:var(--line);
+  margin:22px 0 70px
+}
+
+.letter-label{
+  font:10px var(--mono);
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:#8b8780;
+  margin-bottom:45px
+}
+
+.letter-body{
+  width:min(720px,100%);
+  margin-left:auto
+}
+
+.letter-body p{
+  font:clamp(20px,2.2vw,31px);
+  line-height:1.55;
+  letter-spacing:-.02em;
+  color:#d5d1ca;
+  margin:0 0 25px
+}
+
+.letter-body p:first-child{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:clamp(30px,4vw,55px);
+  color:#f4f0e8;
+  margin-bottom:50px
+}
+
+.letter-body .letter-sign{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:clamp(30px,4vw,55px);
+  margin-top:65px;
+  color:#f4f0e8
+}
+
+
+/* FINAL */
 
 .final{
   min-height:120svh;
@@ -727,6 +813,9 @@ a{
   color:#888
 }
 
+
+/* MUSIC */
+
 .sound{
   position:fixed;
   z-index:60;
@@ -736,117 +825,16 @@ a{
   letter-spacing:.12em;
   text-transform:uppercase;
   opacity:.75;
-  mix-blend-mode:difference
-}
-
-
-/* =========================================
-   LETTER
-========================================= */
-
-.letter{
-  min-height:135svh;
-  padding:16vw var(--pad);
-  display:grid;
-  place-items:center;
-  background:#0a0a0a
-}
-
-.letter-inner{
-  width:min(920px,100%)
-}
-
-.letter-meta{
-  display:flex;
-  justify-content:space-between;
-  font:10px var(--mono);
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:#777
-}
-
-.letter-rule{
-  height:1px;
-  background:var(--line);
-  margin:22px 0 70px
-}
-
-.letter-label{
-  font:10px var(--mono);
-  letter-spacing:.13em;
-  text-transform:uppercase;
-  color:#8b8780;
-  margin-bottom:45px
-}
-
-.letter-body{
-  width:min(720px,100%);
-  margin-left:auto
-}
-
-.letter-body p{
-  font:clamp(20px,2.2vw,31px)/1.55 var(--sans);
-  letter-spacing:-.02em;
-  color:#d5d1ca;
-  margin:0 0 25px
-}
-
-.letter-body p:first-child{
-  font-family:var(--serif);
-  font-style:italic;
-  font-size:clamp(30px,4vw,55px);
-  color:#f4f0e8;
-  margin-bottom:50px
-}
-
-.letter-body .letter-sign{
-  font-family:var(--serif);
-  font-style:italic;
-  font-size:clamp(30px,4vw,55px);
-  margin-top:65px;
-  color:#f4f0e8
-}
-
-.music-ui{
-  position:fixed;
-  z-index:61;
-  left:var(--pad);
-  bottom:20px;
-
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  font:9px var(--mono);
-  letter-spacing:.12em;
-
-  color:#aaa;
-
   mix-blend-mode:difference;
-  pointer-events:none
-}
-
-.music-dot{
-  width:5px;
-  height:5px;
-  border:1px solid #aaa;
-  border-radius:50%;
-  display:block
-}
-
-.music-ui.playing .music-dot{
-  background:#fff;
-  box-shadow:0 0 12px rgba(255,255,255,.8)
-}
-
-.sound{
   transition:opacity .3s
 }
 
+.sound:hover{
+  opacity:1
+}
 
-/* =========================================
-   MOBILE
-========================================= */
+
+/* MOBILE */
 
 @media(max-width:700px){
 
@@ -923,34 +911,24 @@ a{
     font-size:90px
   }
 
-
   /*
-    MOBILE HORIZONTAL ARCHIVE
+    Mobile cards are large enough to clearly reveal
+    that this is a horizontal swipe area.
   */
 
+  .rail-wrap{
+    margin-top:50px;
+    touch-action:pan-x pan-y
+  }
+
   .rail{
-    gap:18px;
-
-    /*
-      Less top space on mobile.
-    */
-    padding-top:70px;
-
-    /*
-      Explicitly tell iOS/Android that
-      this surface is horizontally draggable.
-    */
-    touch-action:pan-x;
+    gap:22px;
+    padding-top:20px
   }
 
   .card{
-    width:78vw;
-    min-width:78vw;
-
-    /*
-      Never allow flexbox to shrink it.
-    */
-    flex:none
+    width:72vw;
+    min-width:72vw
   }
 
   .final-image{
@@ -978,13 +956,10 @@ a{
   .letter-body p{
     font-size:20px
   }
-
 }
 
 
-/* =========================================
-   REDUCED MOTION
-========================================= */
+/* REDUCED MOTION */
 
 @media(prefers-reduced-motion:reduce){
 
@@ -1003,7 +978,6 @@ a{
   .card img{
     transition:none
   }
-
 }
 
 </style>
@@ -1014,8 +988,13 @@ a{
 
 <div class="noise"></div>
 
+
+<!-- LOADER -->
+
 <div class="loader">
+
   <div class="loader-inner">
+
     <div class="loader-kicker">
       Ashi's Birthday / 2026
     </div>
@@ -1027,9 +1006,13 @@ a{
     <div class="loader-line">
       <i></i>
     </div>
+
   </div>
+
 </div>
 
+
+<!-- HEADER -->
 
 <header class="top">
 
@@ -1044,49 +1027,53 @@ a{
 </header>
 
 
+<!-- PROGRESS -->
+
 <div class="progress">
   <i></i>
 </div>
 
 
+<!-- CHAPTER -->
+
 <div class="chapter">
-  <b id="chapter">01</b>
+
+  <b id="chapter">
+    01
+  </b>
+
   / 06&nbsp;&nbsp;
 
   <span id="chapterName">
     beginning
   </span>
+
 </div>
 
+
+<!-- MUSIC BUTTON -->
 
 <button class="sound" id="sound">
   music off
 </button>
 
 
+<!-- MUSIC -->
+
 <audio id="bgMusic" preload="auto" loop>
-  <source src="music/solace.mp3" type="audio/mpeg">
+
+  <source
+    src="music/solace.mp3"
+    type="audio/mpeg"
+  >
+
 </audio>
-
-
-<div class="music-ui" id="musicUI" aria-live="polite">
-
-  <span class="music-dot"></span>
-
-  <span id="musicLabel">
-    MUSIC OFF
-  </span>
-
-</div>
-
 
 
 <main id="top">
 
 
-<!-- =====================================
-     HERO
-===================================== -->
+<!-- HERO -->
 
 <section
   class="hero"
@@ -1124,10 +1111,7 @@ a{
 </section>
 
 
-
-<!-- =====================================
-     INTRO
-===================================== -->
+<!-- INTRO -->
 
 <section
   class="intro"
@@ -1142,18 +1126,15 @@ a{
     </div>
 
     <h2>
-      Some years are
-      <br>
-      <em>lived.</em>
-      <br>
+      Some years are<br>
+      <em>lived.</em><br>
       Some are felt.
     </h2>
 
     <p>
       This one deserves a place of its own.
-      So I made one. Move slowly. There are
-      things here that only appear when you
-      look for them.
+      So I made one. Move slowly. There are things
+      here that only appear when you look for them.
     </p>
 
     <div class="rule"></div>
@@ -1167,10 +1148,7 @@ a{
 </section>
 
 
-
-<!-- =====================================
-     STORY
-===================================== -->
+<!-- STORY -->
 
 <section class="story">
 
@@ -1199,16 +1177,14 @@ a{
         </div>
 
         <h3>
-          The little
-          <br>
+          The little<br>
           <em>things.</em>
         </h3>
 
         <p>
           The details that would never make it
           into a birthday card. The quiet ones.
-          The ones that somehow become the
-          whole story.
+          The ones that somehow become the whole story.
         </p>
 
       </div>
@@ -1216,7 +1192,6 @@ a{
     </div>
 
   </article>
-
 
 
   <article
@@ -1229,7 +1204,7 @@ a{
 
       <img
         class="scene-img"
-        src="https://res.cloudinary.com/pk7fmz3d/image/upload/v1789843568/IMG_5635.jpg "
+        src="https://res.cloudinary.com/pk7fmz3d/image/upload/v1789843568/IMG_5635.jpg"
         alt=""
         data-speed="0.16"
       >
@@ -1243,14 +1218,13 @@ a{
         </div>
 
         <h3>
-          Keep this
-          <br>
+          Keep this<br>
           <em>frame.</em>
         </h3>
 
         <p>
-          A moment doesn't need to be
-          extraordinary to deserve remembering.
+          A moment doesn't need to be extraordinary
+          to deserve remembering.
         </p>
 
       </div>
@@ -1258,7 +1232,6 @@ a{
     </div>
 
   </article>
-
 
 
   <article
@@ -1285,8 +1258,7 @@ a{
         </div>
 
         <h3>
-          And then
-          <br>
+          And then<br>
           <em>there was you.</em>
         </h3>
 
@@ -1301,13 +1273,11 @@ a{
 
   </article>
 
+
 </section>
 
 
-
-<!-- =====================================
-     CONSTELLATION
-===================================== -->
+<!-- CONSTELLATION -->
 
 <section
   class="constellation"
@@ -1329,8 +1299,7 @@ a{
 
 
   <h2>
-    25
-    <br>
+    25<br>
     <em>moments.</em>
   </h2>
 
@@ -1384,10 +1353,7 @@ a{
 </section>
 
 
-
-<!-- =====================================
-     HORIZONTAL ARCHIVE
-===================================== -->
+<!-- ARCHIVE -->
 
 <section
   class="archive"
@@ -1402,15 +1368,14 @@ a{
     </div>
 
     <h2>
-      Keep
-      <br>
+      Keep<br>
       <em>going.</em>
     </h2>
 
     <p class="archive-sub">
-      Little frames. different places.
-      ways of saying: this year has already
-      happened, and there is still so much left.
+      Little frames. different places. ways of saying:
+      this year has already happened, and there is still
+      so much left.
     </p>
 
   </div>
@@ -1418,13 +1383,14 @@ a{
 
   <!--
     IMPORTANT:
-    Wrapper prevents the horizontal rail
-    from affecting the main page width.
+    This wrapper is the horizontal scrolling area.
+    It is intentionally separate from the page scroll.
   -->
 
   <div
     class="rail-wrap"
     id="railWrap"
+    data-lenis-prevent
   >
 
     <div
@@ -1437,6 +1403,8 @@ a{
 
         <img
           src="https://res.cloudinary.com/pk7fmz3d/image/upload/v1789843573/IMG_7636.jpg"
+          alt=""
+          draggable="false"
         >
 
         <figcaption class="meta">
@@ -1454,11 +1422,12 @@ a{
       </figure>
 
 
-
       <figure class="card">
 
         <img
           src="https://res.cloudinary.com/pk7fmz3d/image/upload/v1789843569/IMG_9254.jpg"
+          alt=""
+          draggable="false"
         >
 
         <figcaption class="meta">
@@ -1476,11 +1445,12 @@ a{
       </figure>
 
 
-
       <figure class="card">
 
         <img
           src="https://res.cloudinary.com/pk7fmz3d/image/upload/v1789846147/IMG_5413.jpg"
+          alt=""
+          draggable="false"
         >
 
         <figcaption class="meta">
@@ -1502,13 +1472,15 @@ a{
 
   </div>
 
+
+  <div class="rail-note">
+    drag / swipe horizontally
+  </div>
+
 </section>
 
 
-
-<!-- =====================================
-     FUTURE
-===================================== -->
+<!-- FUTURE -->
 
 <section
   class="future"
@@ -1525,8 +1497,7 @@ a{
     </div>
 
     <div class="big">
-      More
-      <br>
+      More<br>
       <em>to come.</em>
     </div>
 
@@ -1542,10 +1513,7 @@ a{
 </section>
 
 
-
-<!-- =====================================
-     LETTER
-===================================== -->
+<!-- LETTER -->
 
 <section
   class="letter"
@@ -1567,14 +1535,11 @@ a{
 
     </div>
 
-
     <div class="letter-rule"></div>
-
 
     <div class="letter-label">
       YOUR LETTER · THE LAST PRIVATE FRAME
     </div>
-
 
     <div class="letter-body">
 
@@ -1587,35 +1552,32 @@ a{
       </p>
 
       <p>
-        I wanted to make you something that
-        felt a little different. Not just a message,
-        not just a picture, but a tiny place that
-        exists only for you.
+        I wanted to make you something that felt a little different.
+        Not just a message, not just a picture, but a tiny place
+        that exists only for you.
       </p>
 
       <p>
-        Twenty-five feels like a beautiful number
-        to pause at — to look at everything that
-        has happened, everything you have become,
-        and everything that is still waiting for you.
+        Twenty-five feels like a beautiful number to pause at —
+        to look at everything that has happened, everything you
+        have become, and everything that is still waiting for you.
       </p>
 
       <p>
-        I hope this next chapter brings you the
-        kind of days you remember without trying.
-        More laughter. More little adventures.
-        More ordinary moments that somehow
-        become your favourite memories.
+        I hope this next chapter brings you the kind of days you
+        remember without trying. More laughter. More little
+        adventures. More ordinary moments that somehow become
+        your favourite memories.
       </p>
 
       <p>
-        And wherever life takes you, I hope you
-        always remember how special you are to me.
+        And wherever life takes you, I hope you always remember
+        how special you are to me.
       </p>
 
       <p>
-        You are the best thing that ever happened
-        to me, Thank you for being you.
+        You are the best thing that ever happened to me,
+        Thank you for being you.
       </p>
 
       <p>
@@ -1623,8 +1585,7 @@ a{
       </p>
 
       <p class="letter-sign">
-        Always,
-        <br>
+        Always,<br>
         Me.
       </p>
 
@@ -1635,10 +1596,7 @@ a{
 </section>
 
 
-
-<!-- =====================================
-     FINAL
-===================================== -->
+<!-- FINAL -->
 
 <section
   class="final"
@@ -1659,14 +1617,12 @@ a{
     </div>
 
     <h2>
-      Happy
-      <br>
+      Happy<br>
       <em>25th.</em>
     </h2>
 
     <p>
-      Keep becoming. Keep making
-      ordinary days beautiful.
+      Keep becoming. Keep making ordinary days beautiful.
     </p>
 
     <div class="signature">
@@ -1681,18 +1637,25 @@ a{
 </main>
 
 
-
 <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
 
 <script>
+
+/* =========================================================
+   LENIS
+========================================================= */
 
 const reduced =
   matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
-/* =====================================
-   LENIS
-===================================== */
+/*
+  The carousel is excluded from Lenis smoothing using
+  both data-lenis-prevent and the prevent callback.
+
+  This means vertical page scrolling remains independent
+  from the horizontal carousel.
+*/
 
 const lenis = new Lenis({
 
@@ -1706,14 +1669,23 @@ const lenis = new Lenis({
 
   duration:1.15,
 
-  respectReducedMotion:true
+  respectReducedMotion:true,
+
+  allowNestedScroll:false,
+
+  prevent:(node)=>{
+
+    return node instanceof HTMLElement &&
+           node.closest('#railWrap') !== null;
+
+  }
 
 });
 
 
-/* =====================================
+/* =========================================================
    PAGE PROGRESS
-===================================== */
+========================================================= */
 
 const progress =
   document.querySelector('.progress i');
@@ -1738,37 +1710,42 @@ function clamp(v,a,b){
 }
 
 
+/* =========================================================
+   LENIS SCROLL ANIMATION
+========================================================= */
+
 lenis.on('scroll',e=>{
 
   const max =
     document.documentElement.scrollHeight -
     innerHeight;
 
+
   progress.style.height =
     (
       max
-      ?
-      clamp(
-        e.animatedScroll / max,
-        0,
-        1
-      ) * 100
-      :
-      0
+      ? clamp(
+          e.animatedScroll / max,
+          0,
+          1
+        ) * 100
+      : 0
     ) + '%';
 
 
-  let active = sections[0];
+  let active =
+    sections[0];
 
 
-  for(const s of sections){
+  for(const section of sections){
 
     if(
       e.animatedScroll >=
-      s.offsetTop - innerHeight * .55
+      section.offsetTop -
+      innerHeight * .55
     ){
 
-      active = s;
+      active = section;
 
     }
 
@@ -1782,18 +1759,19 @@ lenis.on('scroll',e=>{
     active.dataset.name;
 
 
-  /*
-    Scene parallax
-  */
+  /* -------------------------
+     STORY PARALLAX
+  ------------------------- */
 
   document
     .querySelectorAll('[data-speed]')
     .forEach(img=>{
 
+      const scene =
+        img.closest('.scene');
+
       const r =
-        img
-          .closest('.scene')
-          .getBoundingClientRect();
+        scene.getBoundingClientRect();
 
       const p =
         (
@@ -1805,81 +1783,109 @@ lenis.on('scroll',e=>{
 
 
       img.style.transform =
-        `translate3d(
+        `
+        translate3d(
           0,
-          ${(p-.5)*-90*+img.dataset.speed*10}px,
+          ${(p-.5) *
+            -90 *
+            +img.dataset.speed *
+            10}px,
           0
-        ) scale(1.18)`;
+        )
+        scale(1.18)
+        `;
 
     });
 
 
-  const y =
-    e.animatedScroll;
+  /* -------------------------
+     HERO PARALLAX
+  ------------------------- */
+
+  const heroBg =
+    document.querySelector('.hero-bg');
+
+  heroBg.style.transform =
+    `
+    scale(1.08)
+    translate3d(
+      0,
+      ${e.animatedScroll * .06}px,
+      0
+    )
+    `;
 
 
-  document
-    .querySelector('.hero-bg')
-    .style.transform =
-      `scale(1.08)
-       translate3d(
-         0,
-         ${y*.06}px,
-         0
-       )`;
+  /* -------------------------
+     FUTURE PARALLAX
+  ------------------------- */
+
+  const future =
+    document.querySelector('.future');
+
+  const futureBg =
+    document.querySelector('.future-bg');
 
 
-  document
-    .querySelector('.future-bg')
-    .style.transform =
-      `scale(1.15)
-       translate3d(
-         0,
-         ${
-           Math.max(
-             0,
-             y -
-             document
-               .querySelector('.future')
-               .offsetTop
-           ) * -.025
-         }px,
-         0
-       )`;
+  futureBg.style.transform =
+    `
+    scale(1.15)
+    translate3d(
+      0,
+      ${
+        Math.max(
+          0,
+          e.animatedScroll -
+          future.offsetTop
+        ) * -.025
+      }px,
+      0
+    )
+    `;
 
 
-  document
-    .querySelector('.final-image')
-    .style.transform =
-      `scale(1.3)
-       rotate(
-         ${Math.sin(y*.001)*2}deg
-       )`;
+  /* -------------------------
+     FINAL IMAGE
+  ------------------------- */
+
+  const finalImage =
+    document.querySelector('.final-image');
+
+
+  finalImage.style.transform =
+    `
+    scale(1.3)
+    rotate(
+      ${Math.sin(e.animatedScroll * .001) * 2}deg
+    )
+    `;
 
 });
 
 
-
-/* =====================================
-   ANCHORS
-===================================== */
+/* =========================================================
+   ANCHOR LINKS
+========================================================= */
 
 document
   .querySelectorAll('a[href^="#"]')
-  .forEach(a=>{
+  .forEach(anchor=>{
 
-    a.addEventListener('click',e=>{
+    anchor.addEventListener('click',e=>{
 
-      const el =
+      const target =
         document.querySelector(
-          a.getAttribute('href')
+          anchor.getAttribute('href')
         );
 
-      if(el){
+
+      if(target){
 
         e.preventDefault();
 
-        lenis.scrollTo(el);
+        lenis.scrollTo(
+          target
+        );
 
       }
 
@@ -1888,258 +1894,159 @@ document
   });
 
 
-
-/* =====================================
-   FIXED MOBILE HORIZONTAL ARCHIVE
-===================================== */
-
-const rail =
-  document.querySelector('#rail');
+/* =========================================================
+   HORIZONTAL CAROUSEL
+========================================================= */
 
 const railWrap =
   document.querySelector('#railWrap');
 
 
-let dragging = false;
-
-let startX = 0;
-
-let startScroll = 0;
-
-
 /*
-  Maximum horizontal distance.
+  IMPORTANT:
+
+  There is NO wheel event here.
+
+  We intentionally do not convert vertical wheel movement
+  into horizontal movement.
+
+  Therefore:
+
+  mouse wheel = page scroll
+  horizontal drag = carousel
+  mobile horizontal swipe = carousel
 */
 
-function railMaxScroll(){
 
-  return Math.max(
-    0,
-
-    rail.scrollWidth -
-    railWrap.clientWidth
-  );
-
-}
-
+/* =========================================================
+   DESKTOP MOUSE DRAG
+========================================================= */
 
 /*
-  Keep the rail inside
-  its actual boundaries.
+  Only mouse input gets custom drag behaviour.
+
+  Touch devices are left to the browser's native
+  horizontal scrolling so vertical page gestures aren't
+  hijacked by JavaScript.
 */
 
-function setRailScroll(value){
+let isDragging = false;
 
-  rail.scrollLeft =
-    Math.max(
-      0,
+let dragStartX = 0;
 
-      Math.min(
-        value,
-        railMaxScroll()
-      )
-    );
-
-}
+let dragStartScroll = 0;
 
 
-/*
-  TOUCH + MOUSE DOWN
-*/
-
-rail.addEventListener(
+railWrap.addEventListener(
   'pointerdown',
   e=>{
 
     /*
-      Ignore right/middle mouse buttons.
+      Ignore touch and pen.
+
+      Native touch scrolling handles mobile.
     */
 
-    if(
-      e.pointerType === 'mouse' &&
-      e.button !== 0
-    ){
-
+    if(e.pointerType !== 'mouse'){
       return;
-
     }
 
 
-    dragging = true;
+    isDragging = true;
 
-    startX =
+    dragStartX =
       e.clientX;
 
-    startScroll =
-      rail.scrollLeft;
+    dragStartScroll =
+      railWrap.scrollLeft;
 
 
-    rail.classList.add(
+    railWrap.classList.add(
       'dragging'
     );
 
 
-    /*
-      Critical for iOS/Android.
-    */
-
-    try{
-
-      rail.setPointerCapture(
-        e.pointerId
-      );
-
-    }catch(err){}
+    railWrap.setPointerCapture(
+      e.pointerId
+    );
 
   }
 );
 
 
-/*
-  TOUCH + MOUSE MOVE
-*/
-
-rail.addEventListener(
+railWrap.addEventListener(
   'pointermove',
   e=>{
 
-    if(!dragging){
-
+    if(!isDragging){
       return;
-
     }
 
 
     const distance =
-      e.clientX - startX;
+      e.clientX -
+      dragStartX;
 
 
-    setRailScroll(
-      startScroll - distance
-    );
+    railWrap.scrollLeft =
+      dragStartScroll -
+      distance;
 
   }
 );
 
 
-/*
-  END DRAG
-*/
+function stopDragging(){
 
-function stopRailDrag(e){
-
-  if(!dragging){
-
+  if(!isDragging){
     return;
-
   }
 
 
-  dragging = false;
+  isDragging = false;
 
-
-  rail.classList.remove(
+  railWrap.classList.remove(
     'dragging'
   );
-
-
-  try{
-
-    rail.releasePointerCapture(
-      e.pointerId
-    );
-
-  }catch(err){}
 
 }
 
 
-rail.addEventListener(
+railWrap.addEventListener(
   'pointerup',
-  stopRailDrag
+  stopDragging
 );
-
-
-rail.addEventListener(
-  'pointercancel',
-  stopRailDrag
-);
-
-
-rail.addEventListener(
-  'lostpointercapture',
-  ()=>{
-
-    dragging = false;
-
-    rail.classList.remove(
-      'dragging'
-    );
-
-  }
-);
-
-
-
-/*
-  DESKTOP TRACKPAD / SHIFT + WHEEL
-
-  We only intercept genuinely horizontal
-  gestures.
-
-  Normal vertical wheel remains the
-  Lenis page scroll.
-*/
 
 railWrap.addEventListener(
-  'wheel',
-  e=>{
+  'pointercancel',
+  stopDragging
+);
 
-    if(
-      railMaxScroll() <= 0
-    ){
-
-      return;
-
-    }
-
-
-    if(
-      e.shiftKey ||
-      Math.abs(e.deltaX) >
-      Math.abs(e.deltaY)
-    ){
-
-      e.preventDefault();
-
-
-      setRailScroll(
-
-        rail.scrollLeft +
-
-        (
-          e.shiftKey
-          ?
-          e.deltaY
-          :
-          e.deltaX
-        )
-
-      );
-
-    }
-
-  },
-  {
-    passive:false
-  }
+railWrap.addEventListener(
+  'lostpointercapture',
+  stopDragging
 );
 
 
+/* =========================================================
+   PREVENT IMAGE DRAGGING
+========================================================= */
 
-/* =====================================
-   TOP BUTTON
-===================================== */
+railWrap
+  .querySelectorAll('img')
+  .forEach(img=>{
+
+    img.addEventListener(
+      'dragstart',
+      e=>e.preventDefault()
+    );
+
+  });
+
+
+/* =========================================================
+   HEADER BUTTON
+========================================================= */
 
 document
   .querySelector('#menu')
@@ -2158,10 +2065,9 @@ document
   );
 
 
-
-/* =====================================
+/* =========================================================
    MUSIC
-===================================== */
+========================================================= */
 
 const music =
   document.querySelector('#bgMusic');
@@ -2169,24 +2075,21 @@ const music =
 const soundBtn =
   document.querySelector('#sound');
 
-const musicUI =
-  document.querySelector('#musicUI');
 
-const musicLabel =
-  document.querySelector('#musicLabel');
+/*
+  Music is intentionally OFF when the website loads.
 
+  It will ONLY play after the user clicks the
+  music button.
+*/
 
-let musicStarted = false;
+music.pause();
+
+soundBtn.textContent =
+  'music off';
 
 
 async function toggleMusic(){
-
-  if(!music.src){
-
-    return;
-
-  }
-
 
   if(music.paused){
 
@@ -2194,47 +2097,27 @@ async function toggleMusic(){
 
       await music.play();
 
-
-      musicStarted = true;
-
-
       soundBtn.textContent =
         'music on';
 
+    }catch(error){
 
-      musicLabel.textContent =
-        'MUSIC ON';
-
-
-      musicUI.classList.add(
-        'playing'
+      console.warn(
+        'Music could not start:',
+        error
       );
 
-
-    }catch(err){
-
-      musicLabel.textContent =
-        'ADD MUSIC FILE';
+      soundBtn.textContent =
+        'music off';
 
     }
-
 
   }else{
 
     music.pause();
 
-
     soundBtn.textContent =
       'music off';
-
-
-    musicLabel.textContent =
-      'MUSIC OFF';
-
-
-    musicUI.classList.remove(
-      'playing'
-    );
 
   }
 
@@ -2247,69 +2130,36 @@ soundBtn.addEventListener(
 );
 
 
-
 /*
-  First user interaction can
-  start the music if the browser
-  allows it.
+  Keep the UI correct if the audio
+  is paused or stopped elsewhere.
 */
 
-[
-  'pointerdown',
-  'wheel',
-  'touchstart',
-  'keydown'
-]
-.forEach(type=>{
+music.addEventListener(
+  'pause',
+  ()=>{
 
-  window.addEventListener(
-    type,
-    ()=>{
+    soundBtn.textContent =
+      'music off';
 
-      if(
-        !musicStarted &&
-        music &&
-        music.readyState > 0
-      ){
-
-        music
-          .play()
-          .then(()=>{
-
-            musicStarted = true;
+  }
+);
 
 
-            soundBtn.textContent =
-              'music on';
+music.addEventListener(
+  'play',
+  ()=>{
+
+    soundBtn.textContent =
+      'music on';
+
+  }
+);
 
 
-            musicLabel.textContent =
-              'MUSIC ON';
-
-
-            musicUI.classList.add(
-              'playing'
-            );
-
-          })
-          .catch(()=>{});
-
-      }
-
-    },
-    {
-      once:true,
-      passive:true
-    }
-  );
-
-});
-
-
-
-/* =====================================
+/* =========================================================
    LOADER
-===================================== */
+========================================================= */
 
 setTimeout(
   ()=>{
